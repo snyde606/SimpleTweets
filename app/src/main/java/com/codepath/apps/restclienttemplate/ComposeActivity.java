@@ -22,15 +22,29 @@ public class ComposeActivity extends AppCompatActivity{
     Button btCompose;
     EditText etCompose;
     TwitterClient client;
+    String username;
+    boolean replying;
+    long replyId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
 
+        username = getIntent().getStringExtra("reply");
+        replying = !username.equals("0000");
+
+        replyId = (getIntent().getLongExtra("id", 0));
+
         btCompose = (Button) findViewById(R.id.btCompose);
         etCompose = (EditText) findViewById(R.id.etCompose);
         client = TwitterApp.getRestClient(this);
+
+        if(replying) {
+            btCompose.setText("Reply");
+            etCompose.setText("@" + username + " ");
+            etCompose.setSelection(etCompose.getText().length());
+        }
 
         setupButtonListener();
     }
@@ -60,7 +74,7 @@ public class ComposeActivity extends AppCompatActivity{
                         }
                     }
 
-                });
+                }, replying, replyId);
             }
         });
     }
