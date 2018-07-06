@@ -51,12 +51,24 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         Tweet tweet = mTweets.get(position);
         String timeAgo = getRelativeTimeAgo(tweet.createdAt);
 
+        if(tweet.favorited)
+            holder.ivFavorite.setActivated(true);
+        else
+            holder.ivFavorite.setActivated(false);
+
+        if(tweet.retweeted)
+            holder.ivRetweet.setActivated(true);
+        else
+            holder.ivRetweet.setActivated(false);
+
         holder.tvUsername.setText(tweet.user.name);
         holder.tvBody.setText(tweet.body);
         holder.tvTimeAgo.setText(timeAgo);
+
         SpannableString content = new SpannableString("@" + tweet.user.getScreenName());
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         holder.tvTag.setText(content);
+
         Glide.with(context).load(tweet.user.profileImageUrl)
                 .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder).error(R.drawable.ic_placeholder).fitCenter())
                         .apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(25,0, RoundedCornersTransformation.CornerType.ALL)))
@@ -75,6 +87,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         public TextView tvTimeAgo;
         public ImageView ivReply;
         public TextView tvTag;
+        public ImageView ivFavorite;
+        public ImageView ivRetweet;
         private WeakReference<ClickListener> listenerRef;
 
         public ViewHolder(View itemView, ClickListener listener){
@@ -87,15 +101,36 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             tvTimeAgo = (TextView) itemView.findViewById(R.id.tvTimeAgo);
             ivReply = (ImageView) itemView.findViewById(R.id.ivReply);
             tvTag = (TextView) itemView.findViewById(R.id.tvTag);
+            ivFavorite = (ImageView) itemView.findViewById(R.id.ivFavorite);
+            ivRetweet = (ImageView) itemView.findViewById(R.id.ivRetweet);
 
             ivReply.setOnClickListener(this);
+            ivFavorite.setOnClickListener(this);
+            ivRetweet.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             if(v.getId() == ivReply.getId())
-                listenerRef.get().onPositionClicked(getAdapterPosition());
+                listenerRef.get().onReplyClicked(getAdapterPosition());
+            else if(v.getId() == ivFavorite.getId() && !ivFavorite.isActivated()) {
+                ivFavorite.setActivated(true);
+                listenerRef.get().onFavoriteClicked(getAdapterPosition());
+            }
+            else if(v.getId() == ivRetweet.getId() && !ivRetweet.isActivated()) {
+                ivRetweet.setActivated(true);
+                listenerRef.get().onRetweetClicked(getAdapterPosition());
+            }
+            else if(v.getId() == ivFavorite.getId() && ivFavorite.isActivated()) {
+                ivFavorite.setActivated(false);
+                listenerRef.get().onUnFavoriteClicked(getAdapterPosition());
+            }
+            else if(v.getId() == ivRetweet.getId() && ivRetweet.isActivated()) {
+                ivRetweet.setActivated(false);
+                listenerRef.get().onUnRetweetClicked(getAdapterPosition());
+            }
         }
+
     }
 
     public String getRelativeTimeAgo(String rawJsonDate) {
@@ -130,7 +165,12 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
     public interface ClickListener {
 
-        void onPositionClicked(int position);
+        void onReplyClicked(int position);
+        void onFavoriteClicked(int position);
+        void onRetweetClicked(int position);
+        void onUnFavoriteClicked(int position);
+        void onUnRetweetClicked(int position);
+
 
     }
 

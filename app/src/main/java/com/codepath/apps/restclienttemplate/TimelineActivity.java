@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -44,11 +45,70 @@ public class TimelineActivity extends AppCompatActivity {
         tweets = new ArrayList<Tweet>();
         tweetAdapter = new TweetAdapter(tweets, new TweetAdapter.ClickListener() {
             @Override
-            public void onPositionClicked(int position) {
+            public void onReplyClicked(int position) {
                 Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
                 i.putExtra("reply", tweets.get(position).getUser().getScreenName());
                 i.putExtra("id", tweets.get(position).getUid());
                 startActivity(i);
+            }
+            @Override
+            public void onFavoriteClicked(int position) {
+                client.favorite(new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                }, tweets.get(position).getUid());
+            }
+
+            @Override
+            public void onRetweetClicked(int position) {
+                client.retweet(new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                }, tweets.get(position).getUid());
+            }
+
+            @Override
+            public void onUnRetweetClicked(int position) {
+                client.unRetweet(new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                }, tweets.get(position).getUid());
+            }
+
+            @Override
+            public void onUnFavoriteClicked(int position) {
+                client.unFavorite(new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                }, tweets.get(position).getUid());
             }
         });
 

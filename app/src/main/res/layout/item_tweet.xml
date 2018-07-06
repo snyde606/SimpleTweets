@@ -52,6 +52,24 @@
         app:srcCompat="@drawable/reply_arrow" />
 
     <ImageView
+        android:id="@+id/ivFavorite"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/tvBody"
+        android:layout_toLeftOf="@+id/ivRetweet"
+        android:layout_marginRight="5dp"
+        app:srcCompat="@drawable/ic_favorite" />
+
+    <ImageView
+        android:id="@+id/ivRetweet"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/tvBody"
+        android:layout_toLeftOf="@+id/ivReply"
+        android:layout_marginRight="5dp"
+        app:srcCompat="@drawable/ic_retweet" />
+
+    <ImageView
         android:id="@+id/ivBorder"
         android:layout_width="match_parent"
         android:layout_height="2dp"

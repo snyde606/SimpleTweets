@@ -1,10 +1,12 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,25 +46,40 @@ public class ComposeActivity extends AppCompatActivity{
         tvCharRemain = (TextView) findViewById(R.id.tvCharRemain);
         client = TwitterApp.getRestClient(this);
 
-        tvCharRemain.setText("Characters remaining: 140");
-
         if(replying) {
             btCompose.setText("Reply");
             etCompose.setText("@" + username + " ");
             etCompose.setSelection(etCompose.getText().length());
         }
 
+        int remain = 140 - etCompose.length();
+        tvCharRemain.setText("Characters remaining: " + remain);
+        tvCharRemain.setTextColor(Color.BLACK);
+
         setupButtonListener();
 
-        etCompose.setOnKeyListener(new View.OnKeyListener(){
+        etCompose.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
 
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
                 int remain = 140 - etCompose.length();
                 tvCharRemain.setText("Characters remaining: " + remain);
-                return false;
+                if(remain < 0)
+                    tvCharRemain.setTextColor(Color.RED);
+                else
+                    tvCharRemain.setTextColor(Color.BLACK);
             }
         });
+
     }
 
     private void setupButtonListener() {
