@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -21,6 +23,7 @@ public class ComposeActivity extends AppCompatActivity{
 
     Button btCompose;
     EditText etCompose;
+    TextView tvCharRemain;
     TwitterClient client;
     String username;
     boolean replying;
@@ -38,7 +41,10 @@ public class ComposeActivity extends AppCompatActivity{
 
         btCompose = (Button) findViewById(R.id.btCompose);
         etCompose = (EditText) findViewById(R.id.etCompose);
+        tvCharRemain = (TextView) findViewById(R.id.tvCharRemain);
         client = TwitterApp.getRestClient(this);
+
+        tvCharRemain.setText("Characters remaining: 140");
 
         if(replying) {
             btCompose.setText("Reply");
@@ -47,6 +53,16 @@ public class ComposeActivity extends AppCompatActivity{
         }
 
         setupButtonListener();
+
+        etCompose.setOnKeyListener(new View.OnKeyListener(){
+
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                int remain = 140 - etCompose.length();
+                tvCharRemain.setText("Characters remaining: " + remain);
+                return false;
+            }
+        });
     }
 
     private void setupButtonListener() {

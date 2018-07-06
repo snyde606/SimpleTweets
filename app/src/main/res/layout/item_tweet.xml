@@ -18,9 +18,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
         android:layout_toEndOf="@+id/ivProfileImage"
         android:text="TextView"
-        android:layout_marginLeft="5dp"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -50,4 +50,26 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/tvBody"
         app:srcCompat="@drawable/reply_arrow" />
+
+    <ImageView
+        android:id="@+id/ivBorder"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/ivReply"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        app:srcCompat="@android:color/holo_blue_light" />
+
+    <TextView
+        android:id="@+id/tvTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvUserName"
+        android:layout_alignParentStart="@+id/tvUserName"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="5dp"
+        android:layout_toEndOf="@+id/tvUserName"
+        android:text="TextView"
+        android:textColor="@android:color/holo_blue_dark" />
 </RelativeLayout>

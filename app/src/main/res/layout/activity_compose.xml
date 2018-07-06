@@ -18,4 +18,12 @@
         android:layout_below="@+id/etCompose"
         android:text="Tweet" />
 
+    <TextView
+        android:id="@+id/tvCharRemain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btCompose"
+        android:layout_alignParentStart="true"
+        android:text="TextView" />
+
 </RelativeLayout>

@@ -4,7 +4,9 @@ import android.content.Context;
 import android.net.ParseException;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
 import android.text.format.DateUtils;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +54,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         holder.tvUsername.setText(tweet.user.name);
         holder.tvBody.setText(tweet.body);
         holder.tvTimeAgo.setText(timeAgo);
+        SpannableString content = new SpannableString("@" + tweet.user.getScreenName());
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        holder.tvTag.setText(content);
         Glide.with(context).load(tweet.user.profileImageUrl)
                 .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder).error(R.drawable.ic_placeholder).fitCenter())
                         .apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(25,0, RoundedCornersTransformation.CornerType.ALL)))
@@ -69,6 +74,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         public TextView tvBody;
         public TextView tvTimeAgo;
         public ImageView ivReply;
+        public TextView tvTag;
         private WeakReference<ClickListener> listenerRef;
 
         public ViewHolder(View itemView, ClickListener listener){
@@ -80,6 +86,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvTimeAgo = (TextView) itemView.findViewById(R.id.tvTimeAgo);
             ivReply = (ImageView) itemView.findViewById(R.id.ivReply);
+            tvTag = (TextView) itemView.findViewById(R.id.tvTag);
 
             ivReply.setOnClickListener(this);
         }
